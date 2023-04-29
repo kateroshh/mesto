@@ -3,7 +3,7 @@ let nameText = document.querySelector('.profile-info__nametext');
 let descriptionText = document.querySelector('.profile-info__description');
 
 let popup = document.querySelector('.popup');
-let closeButtom = document.querySelector('.popup-form__close');
+let closeButtom = document.querySelector('.popup-content__close');
 let nameInput = document.querySelector('#name');
 let descriptionInput = document.querySelector('#description');
 let sendButtom = document.querySelector('.popup-form__send');
