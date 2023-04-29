@@ -2,9 +2,6 @@ let editButtom = document.querySelector('.profile-info__edit');
 let nameText = document.querySelector('.profile-info__nametext');
 let descriptionText = document.querySelector('.profile-info__description');
 
-console.log(nameText);
-console.log(descriptionText);
-
 let popup = document.querySelector('.popup');
 let closeButtom = document.querySelector('.popup-form__close');
 let nameInput = document.querySelector('#name');
