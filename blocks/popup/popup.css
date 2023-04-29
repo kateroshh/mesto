@@ -1,0 +1,15 @@
+.popup {
+  min-width: 100%;
+  min-height: 100vh;
+  color: #000;
+  overflow: hidden;
+  position: fixed;
+  top: 0px;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  display: none;
+}

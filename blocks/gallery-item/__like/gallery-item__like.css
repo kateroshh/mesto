@@ -1,0 +1,17 @@
+.gallery-item__like {
+  cursor: pointer;
+  background: url(../../../images/like.svg);
+  background-repeat: no-repeat;
+  width: 22px;
+  height: 19px;
+}
+
+.gallery-item__like:hover {
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 315px) {
+  .gallery-item__like {
+    width: 30px;
+  }
+}
