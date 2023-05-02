@@ -9,22 +9,22 @@
 <body>
   <div class="page">
     <header class="header">
-      <img class="header__logo" src="/images/header__logo.svg" alt="Логотип">
-      <div class="header__line"></div>
+      <img class="header__logo" src="images/header__logo.svg" alt="Логотип">
     </header>
     <main class="content">
       <section class="profile">
         <div class="profile-info">
           <img class="profile-info__avatar" src="images/avatar.jpg" alt="Фото профиля">
+          <!-- заданы размеры в css не смогла понять как исправить замечание -->
           <div class="profile-info__text">
             <div class="profile-info__name">
               <h1 class="profile-info__nametext">Жак-Ив Кусто</h1>
-              <img class="profile-info__edit" src="/images/edit_button.svg" alt="Редактирование">
+              <button class="profile-info__edit" type="button"></button>
             </div>
             <p class="profile-info__description">Исследователь океана</p>
           </div>
         </div>
-        <div class="profile__add">+</div>
+        <button class="profile__add" type="button"></button>
 
       </section>
 
@@ -34,7 +34,7 @@
             <img class="gallery-item__img" src="images/gallery/img_1.jpg" alt="Карачаевск">
             <div class="gallery-item__info">
               <h2 class="gallery-item__text">Карачаевск</h2>
-              <div class="gallery-item__like"></div>
+              <button class="gallery-item__like" type="button"></button>
             </div>
           </li>
 
@@ -42,7 +42,7 @@
             <img class="gallery-item__img" src="images/gallery/img_2.jpg" alt="Гора Эльбрус">
             <div class="gallery-item__info">
               <h2 class="gallery-item__text">Гора Эльбрус</h2>
-              <div class="gallery-item__like"></div>
+              <button class="gallery-item__like" type="button"></button>
             </div>
           </li>
 
@@ -50,7 +50,7 @@
             <img class="gallery-item__img" src="images/gallery/img_3.jpg" alt="Домбай">
             <div class="gallery-item__info">
               <h2 class="gallery-item__text">Домбай</h2>
-              <div class="gallery-item__like"></div>
+              <button class="gallery-item__like" type="button"></button>
             </div>
           </li>
 
@@ -58,7 +58,7 @@
             <img class="gallery-item__img" src="images/gallery/img_4.jpg" alt="Гора">
             <div class="gallery-item__info">
               <h2 class="gallery-item__text">Гора Эльбрус</h2>
-              <div class="gallery-item__like"></div>
+              <button class="gallery-item__like" type="button"></button>
             </div>
           </li>
 
@@ -66,7 +66,7 @@
             <img class="gallery-item__img" src="images/gallery/img_5.jpg" alt="Лес">
             <div class="gallery-item__info">
               <h2 class="gallery-item__text">Домбай</h2>
-              <div class="gallery-item__like"></div>
+              <button class="gallery-item__like" type="button"></button>
             </div>
           </li>
 
@@ -74,7 +74,7 @@
             <img class="gallery-item__img" src="images/gallery/img_6.jpg" alt="Карачаево-Черкесия">
             <div class="gallery-item__info">
               <h2 class="gallery-item__text">Карачаево-Черкесия</h2>
-              <div class="gallery-item__like"></div>
+              <button class="gallery-item__like" type="button"></button>
             </div>
           </li>
         </ul>
@@ -86,19 +86,19 @@
       <p class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
 
-    <section class="popup">
-      <div class="popup-content">
-        <h1 class="popup-content__text">Редактировать профиль</h1>
-        <form class="popup-content__form popup-form">
-          <input class="popup-form__input" type="text" id="name">
-          <input class="popup-form__input popup-form__input_last" type="text" id="description">
+    <div class="popup">
+      <div class="popup__container">
+        <h3 class="popup__container__text">Редактировать профиль</h3>
+        <form class="popup__container__form popup-form" name="edit-profile">
+          <input class="popup-form__input" type="text" id="name" name="edit-profile__name">
+          <input class="popup-form__input" type="text" id="description" name="dit-profile__description">
           <button class="popup-form__send" type="submit">Сохранить</button>
         </form>
-        <img class="popup-content__close" src="images/close.svg" alt="Закрыть">
+        <button class="popup__container__close" type="button"></button>
       </div>
-    </section>
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script/index.js"></script>
 </body>
 </html>

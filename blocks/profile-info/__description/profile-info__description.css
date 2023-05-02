@@ -19,5 +19,13 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
+    max-width: 250px;
+  }
+}
+
+@media screen and (max-width: 315px) {
+  .profile-info__description {
+    font-size: 12px;
+    max-width: 150px;
   }
 }

@@ -8,6 +8,8 @@
   line-height: 22px;
   cursor: pointer;
   border-radius: 2px;
+  border: none;
+  transition: opacity 1s ease-out;
 }
 
 .popup-form__send:hover {
@@ -18,5 +20,7 @@
   .popup-form__send {
     max-width: 238px;
     min-height: 46px;
+    font-size: 14px;
+    line-height: 17px;
   }
 }
