@@ -3,7 +3,7 @@ let nameText = document.querySelector('.profile-info__nametext'); //тексто
 let descriptionText = document.querySelector('.profile-info__description'); //текстовый элемент описание
 
 let popup = document.querySelector('.popup'); //модальное окно
-let closeButton = document.querySelector('.popup-container__close'); //кнопка крестик
+let closeButton = document.querySelector('.popup__close'); //кнопка крестик
 let formElement = document.querySelector('.popup-form'); //форма редактирования профиля
 let nameInput = formElement.querySelector('#name'); //поле редактирования имени
 let descriptionInput = formElement.querySelector('#description'); //поле редактирования описания
