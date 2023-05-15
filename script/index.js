@@ -1,12 +1,47 @@
-let editButton = document.querySelector('.profile-info__edit'); //кнопка редактирование профиля
-let nameText = document.querySelector('.profile-info__nametext'); //текстовый элемент имя
-let descriptionText = document.querySelector('.profile-info__description'); //текстовый элемент описание
+//Исходный массив фото с подписями
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
 
-let popup = document.querySelector('.popup'); //модальное окно
-let closeButton = document.querySelector('.popup__close'); //кнопка крестик
-let formElement = document.querySelector('.popup-form'); //форма редактирования профиля
-let nameInput = formElement.querySelector('#name'); //поле редактирования имени
-let descriptionInput = formElement.querySelector('#description'); //поле редактирования описания
+const galleryItemTemplate = document.querySelector('.gallery-item-template'); //темплейт для карточки фото и подпись
+
+
+const editButton = document.querySelector('.profile-info__edit'); //кнопка редактирование профиля
+const nameText = document.querySelector('.profile-info__nametext'); //текстовый элемент имя
+const descriptionText = document.querySelector('.profile-info__description'); //текстовый элемент описание
+
+const popup = document.querySelector('.popup'); //модальное окно
+const closeButton = document.querySelector('.popup__close'); //кнопка крестик
+const formElement = document.querySelector('.popup-form'); //форма редактирования профиля
+const nameInput = formElement.querySelector('#name'); //поле редактирования имени
+const descriptionInput = formElement.querySelector('#description'); //поле редактирования описания
+
+
+
+
 
 //Закрытие модального окна
 function handleClosePopup () {
