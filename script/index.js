@@ -26,8 +26,21 @@ const initialCards = [
   }
 ];
 
-const galleryItemTemplate = document.querySelector('.gallery-item-template'); //темплейт для карточки фото и подпись
+const popupForms = [
+  {
+    titel: 'Редактировать профиль',
+    buttonName: 'Сохранить'
+  },
+  {
+    titel: 'Новое место',
+    buttonName: 'Создать',
+    inputText1: 'Название',
+    inputText2: 'Ссылка на картинку'
+  }
+];
 
+const galleryItemTemplate = document.querySelector('.gallery-item-template').content; //темплейт для карточки фото и подпись
+const galleryItems = document.querySelector('.gallery-items'); //место куда добавляем карточки
 
 const editButton = document.querySelector('.profile-info__edit'); //кнопка редактирование профиля
 const nameText = document.querySelector('.profile-info__nametext'); //текстовый элемент имя
@@ -39,8 +52,19 @@ const formElement = document.querySelector('.popup-form'); //форма реда
 const nameInput = formElement.querySelector('#name'); //поле редактирования имени
 const descriptionInput = formElement.querySelector('#description'); //поле редактирования описания
 
+//Загрузка карточек при открытие сайта
+function initGallery(items) {
+  items.forEach(item => {
+    const itemElement = galleryItemTemplate.cloneNode(true);
+    itemElement.querySelector('.gallery-item__text').innerText = item.name;
+    itemElement.querySelector('.gallery-item__img').src = item.link;
+    itemElement.querySelector('.gallery-item__img').alt = item.name;
+    galleryItems.append(itemElement);
 
+  });
+}
 
+initGallery(initialCards);
 
 
 //Закрытие модального окна
