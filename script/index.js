@@ -26,19 +26,6 @@ const initialCards = [
   }
 ];
 
-const popupForms = [
-  {
-    titel: 'Редактировать профиль',
-    buttonName: 'Сохранить'
-  },
-  {
-    titel: 'Новое место',
-    buttonName: 'Создать',
-    inputText1: 'Название',
-    inputText2: 'Ссылка на картинку'
-  }
-];
-
 const galleryItemTemplate = document.querySelector('.gallery-item-template').content; //темплейт для карточки фото и подпись
 const galleryItems = document.querySelector('.gallery-items'); //место куда добавляем карточки
 
@@ -47,10 +34,19 @@ const nameText = document.querySelector('.profile-info__nametext'); //текст
 const descriptionText = document.querySelector('.profile-info__description'); //текстовый элемент описание
 
 const popup = document.querySelector('.popup'); //модальное окно
-const closeButton = document.querySelector('.popup__close'); //кнопка крестик
-const formElement = document.querySelector('.popup-form'); //форма редактирования профиля
-const nameInput = formElement.querySelector('#name'); //поле редактирования имени
-const descriptionInput = formElement.querySelector('#description'); //поле редактирования описания
+const closeButtonEdit = document.querySelector('.popup__close_edit'); //кнопка крестик
+const popupEdit = document.querySelector('.popup-edit'); //модальное окно
+const formElementEdit = popupEdit.querySelector('.popup-form'); //форма редактирования профиля
+const nameInputEdit = formElementEdit.querySelector('#name'); //поле редактирования имени
+const descriptionInputEdit = formElementEdit.querySelector('#description'); //поле редактирования описания
+
+const closeButtonCreate = document.querySelector('.popup__close_create'); //кнопка крестик
+const createButton = document.querySelector('.profile__add'); //кнопка создание новой карточки
+const popupCreate = document.querySelector('.popup-create'); //модальное окно создания карточки
+const formElementCreate = popupCreate.querySelector('.popup-form'); //форма создания карточки
+const titleInputCreate = formElementCreate.querySelector('#title-card'); //поле заголовка карточки
+const linkInputCreate = formElementCreate.querySelector('#link-card'); //поле ссылка на картинку
+
 
 //Загрузка карточек при открытие сайта
 function initGallery(items) {
@@ -59,44 +55,80 @@ function initGallery(items) {
     itemElement.querySelector('.gallery-item__text').innerText = item.name;
     itemElement.querySelector('.gallery-item__img').src = item.link;
     itemElement.querySelector('.gallery-item__img').alt = item.name;
+    itemElement.querySelector('.gallery-item__like').addEventListener('click', handlegalleryLike);
     galleryItems.append(itemElement);
-
   });
 }
-
-initGallery(initialCards);
 
 
 //Закрытие модального окна
 function handleClosePopup () {
-  popup.classList.remove('popup_opened');
+  popupEdit.classList.remove('popup_opened');
+  popupCreate.classList.remove('popup_opened');
 }
 
 //Функция при открытие модального окна перезает значения текстовых элементов в инпут
-function handleOpenPopup () {
-  popup.classList.add('popup_opened');
-  nameInput.value = nameText.textContent;
-  descriptionInput.value = descriptionText.textContent;
+function handleOpenPopupEdit () {
+  popupEdit.classList.add('popup_opened');
+  nameInputEdit.value = nameText.textContent;
+  descriptionInputEdit.value = descriptionText.textContent;
+}
+
+//Функция открытия модального окна создания карточки
+function handleOpenPopupCreate () {
+  popupCreate.classList.add('popup_opened');
 }
 
 //Функция сохраняет изменения в импутах в текстовые элементы
-function handleFormSubmit (evt) {
+function handleFormSubmitEdit (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-  let nameInputNew = nameInput.value;
-  let descriptionInputNew = descriptionInput.value;
+  let nameInputNew = nameInputEdit.value;
+  let descriptionInputNew = descriptionInputEdit.value;
 
   nameText.textContent = nameInputNew;
-  descriptionText.textContent = descriptionInput.value;
+  descriptionText.textContent = descriptionInputNew;
   //Закрытие модального окна
   handleClosePopup();
 }
 
+//Функция создания новой карточки
+function handleFormSubmitCreate (evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+
+  const itemElement = galleryItemTemplate.cloneNode(true);
+  itemElement.querySelector('.gallery-item__text').innerText = titleInputCreate.value;
+  itemElement.querySelector('.gallery-item__img').src = linkInputCreate.value;
+  itemElement.querySelector('.gallery-item__img').alt = titleInputCreate.value;
+  itemElement.querySelector('.gallery-item__like').addEventListener('click', handlegalleryLike);
+  galleryItems.prepend(itemElement);
+
+  //Закрытие модального окна
+  handleClosePopup();
+}
+
+//Нажатие на кнопку Нравится
+function handlegalleryLike (event) {
+  event.target.classList.toggle('gallery-item__like_active');
+}
+
+
+
+//Первоначальная загрузка карточек
+initGallery(initialCards);
+
 //Закрытие при нажатие на крестик
-closeButton.addEventListener('click', handleClosePopup);
+closeButtonEdit.addEventListener('click', handleClosePopup);
+closeButtonCreate.addEventListener('click', handleClosePopup);
 
 //Нажатие на кнопку редактировать
-editButton.addEventListener('click', handleOpenPopup);
+editButton.addEventListener('click', handleOpenPopupEdit);
 
 //Нажатие на кнопку Сохранить модального окна
-formElement.addEventListener('submit', handleFormSubmit);
+formElementEdit.addEventListener('submit', handleFormSubmitEdit);
+
+//Нажатие на кнопку (+)
+createButton.addEventListener('click', handleOpenPopupCreate);
+
+//Нажатие на кнопку Создать модальное окно
+formElementCreate.addEventListener('submit', handleFormSubmitCreate);
