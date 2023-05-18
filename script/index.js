@@ -55,17 +55,22 @@ const closeButtonPhoto = document.querySelector('.popup-photo__close'); //кно
 const imgPhoto = document.querySelector('.popup-photo__img'); //картинка
 const descriptionTextPhoto = document.querySelector('.popup-photo__description'); //текст описание картинки
 
+//Отображение карточки и событий на карточки
+function renderCard(name, link) {
+  const itemElement = galleryItemTemplate.cloneNode(true);
+  itemElement.querySelector('.gallery-item__text').innerText = name;
+  itemElement.querySelector('.gallery-item__img').src = link;
+  itemElement.querySelector('.gallery-item__img').alt = name;
+  itemElement.querySelector('.gallery-item__img').addEventListener('click', handlegalleryPhoto);
+  itemElement.querySelector('.gallery-item__like').addEventListener('click', handlegalleryLike);
+  itemElement.querySelector('.gallery-item__delete').addEventListener('click', handlegalleryDelete);
+  galleryItems.prepend(itemElement);
+}
+
 //Загрузка карточек при открытие сайта
 function initGallery(items) {
   items.forEach(item => {
-    const itemElement = galleryItemTemplate.cloneNode(true);
-    itemElement.querySelector('.gallery-item__text').innerText = item.name;
-    itemElement.querySelector('.gallery-item__img').src = item.link;
-    itemElement.querySelector('.gallery-item__img').alt = item.name;
-    itemElement.querySelector('.gallery-item__img').addEventListener('click', handlegalleryPhoto);
-    itemElement.querySelector('.gallery-item__like').addEventListener('click', handlegalleryLike);
-    itemElement.querySelector('.gallery-item__delete').addEventListener('click', handlegalleryDelete);
-    galleryItems.append(itemElement);
+    renderCard(item.name, item.link);
   });
 }
 
@@ -127,14 +132,7 @@ function handleFormSubmitCreate (evt) {
 
   if(titleInputCreate.value != null && titleInputCreate.value.trim() != '' && linkInputCreate.value != null && linkInputCreate.value.trim() != '')
   {
-    const itemElement = galleryItemTemplate.cloneNode(true);
-    itemElement.querySelector('.gallery-item__text').innerText = titleInputCreate.value;
-    itemElement.querySelector('.gallery-item__img').src = linkInputCreate.value;
-    itemElement.querySelector('.gallery-item__img').alt = titleInputCreate.value;
-    itemElement.querySelector('.gallery-item__img').addEventListener('click', handlegalleryPhoto);
-    itemElement.querySelector('.gallery-item__like').addEventListener('click', handlegalleryLike);
-    itemElement.querySelector('.gallery-item__delete').addEventListener('click', handlegalleryDelete);
-    galleryItems.prepend(itemElement);
+    renderCard(titleInputCreate.value, linkInputCreate.value);
 
     //Закрытие модального окна
     handleClosePopup();
@@ -158,8 +156,6 @@ function handleFormSubmitCreate (evt) {
   }
 
 }
-
-
 
 //Нажатие на кнопку Нравится
 function handlegalleryLike (event) {
