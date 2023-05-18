@@ -1,11 +1,11 @@
-.popup {
+.popup-photo{
   min-width: 100%;
   min-height: 100vh;
   color: #000;
   overflow: hidden;
   position: fixed;
   top: 0px;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.9);
   align-items: center;
   justify-content: center;
   margin: 0;
