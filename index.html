@@ -40,7 +40,24 @@
       <p class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
 
-    <div class="popup popup-edit">
+    <div class="popup">
+      <div class="popup__container">
+        <h3 class="popup__text">Заголовок</h3>
+        <p class="popup__error">Заполните обязательные поля</p>
+        <form class="popup__form popup-form" name="edit-profile">
+          <input class="popup-form__input" type="text" id="name" name="edit-profile__name" placeholder="Ваше имя">
+          <input class="popup-form__input" type="text" id="description" name="edit-profile__description" placeholder="Ваша профессия">
+          <input class="popup-form__input" type="text" id="title-card" name="create-card__title" placeholder="Название">
+          <input class="popup-form__input" type="text" id="link-card" name="create-card__link" placeholder="Ссылка на картинку">
+          <button class="popup-form__send" type="submit">Кнопка</button>
+        </form>
+        <img class="popup__img" src="images/gallery/img_7.png" alt="Карачаевск">
+        <p class="popup__description">Название карточки</p>
+        <button class="popup__close" aria-label="Закрыть" type="button"></button>
+      </div>
+    </div>
+
+    <!-- <div class="popup popup-edit">
       <div class="popup__container">
         <h3 class="popup__text">Редактировать профиль</h3>
         <p class="popup__error">Заполните обязательные поля</p>
@@ -64,16 +81,16 @@
         </form>
         <button class="popup__close popup__close_create" aria-label="Закрыть" type="button"></button>
       </div>
-    </div>
+    </div> -->
 
 
-    <div class="popup-photo">
+    <!-- <div class="popup-photo">
       <div class="popup-photo__container">
         <img class="popup-photo__img" src="images/gallery/img_7.png" alt="Карачаевск">
         <p class="popup-photo__description">Название карточки</p>
         <button class="popup-photo__close" aria-label="Закрыть" type="button"></button>
       </div>
-    </div>
+    </div> -->
 
   </div>
 

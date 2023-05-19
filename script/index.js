@@ -26,40 +26,88 @@ function initGallery(items) {
 
 //Закрытие модального окна
 function handleClosePopup () {
-  popupEdit.classList.remove('popup_opened');
-  popupCreate.classList.remove('popup_opened');
-  popupPhoto.classList.remove('popup-photo_opened');
-  titleInputCreate.classList.remove('popup-form__input_error');
-  linkInputCreate.classList.remove('popup-form__input_error');
-  errorTextCreate.classList.remove('popup__error_active');
-  errorTextEdit.classList.remove('popup__error_active');
-  nameInputEdit.classList.remove('popup-form__input_error');
+  popup.classList.remove('popup_opened');
 }
 
-//Функция при открытие модального окна перезает значения текстовых элементов в инпут
-function handleOpenPopupEdit () {
-  popupEdit.classList.add('popup_opened');
-  nameInputEdit.value = nameText.textContent;
-  descriptionInputEdit.value = descriptionText.textContent;
+//Функция открытия модального окна
+function handleOpenPopup (typeModal) {
+  if(typeModal === 'edit') {
+    popupTitle.textContent = 'Редактировать профиль';
+    popupTitle.classList.add('popup__text_active');
+
+    errorText.classList.remove('popup__error_active');
+
+    inputFormName.value = nameText.textContent;
+    inputFormDescription.value = descriptionText.textContent;
+    inputFormName.classList.add('popup-form__input_active');
+    inputFormDescription.classList.add('popup-form__input_active');
+    inputFormTitleCard.classList.remove('popup-form__input_active');
+    inputLinkCard.classList.remove('popup-form__input_active');
+
+    buttonSubmit.classList.add('popup-form__send_active');
+    buttonSubmit.textContent = 'Сохранить';
+
+    imgPhoto.classList.remove('popup__img_active');
+    descriptionTextPhoto.classList.remove('popup__description_active');
+    popup.classList.remove('popup_photo');
+    popupContainer.classList.remove('popup__container_photo');
+    buttonClosePopup.classList.remove('popup__close_photo');
+  } else if(typeModal === 'create') {
+    popupTitle.textContent = 'Новое место';
+    popupTitle.classList.add('popup__text_active');
+
+    errorText.classList.remove('popup__error_active');
+
+    inputFormTitleCard.classList.add('popup-form__input_active');
+    inputLinkCard.classList.add('popup-form__input_active');
+    inputFormName.classList.remove('popup-form__input_active');
+    inputFormDescription.classList.remove('popup-form__input_active');
+
+    buttonSubmit.classList.add('popup-form__send_active');
+    buttonSubmit.textContent = 'Создать';
+
+    imgPhoto.classList.remove('popup__img_active');
+    descriptionTextPhoto.classList.remove('popup__description_active');
+    popup.classList.remove('popup_photo');
+    popupContainer.classList.remove('popup__container_photo');
+    buttonClosePopup.classList.remove('popup__close_photo');
+  } else if(typeModal === 'photo') {
+    popupTitle.classList.remove('popup__text_active');
+
+    errorText.classList.remove('popup__error_active');
+
+    inputFormTitleCard.classList.remove('popup-form__input_active');
+    inputLinkCard.classList.remove('popup-form__input_active');
+    inputFormName.classList.remove('popup-form__input_active');
+    inputFormDescription.classList.remove('popup-form__input_active');
+
+    buttonSubmit.classList.remove('popup-form__send_active');
+
+    imgPhoto.classList.add('popup__img_active');
+    descriptionTextPhoto.classList.add('popup__description_active');
+    popup.classList.add('popup_photo');
+    popupContainer.classList.add('popup__container_photo');
+    buttonClosePopup.classList.add('popup__close_photo');
+  }
+  popup.classList.add('popup_opened');
 }
 
-//Функция открытия модального окна создания карточки
-function handleOpenPopupCreate () {
-  popupCreate.classList.add('popup_opened');
-}
+//Функция обработки Создания карточки и редактирования профиля
+function handleFormSubmit (evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-//Функция открытия модального окна фото
-function handleOpenPopupPhoto () {
-  popupPhoto.classList.add('popup-photo_opened');
+  if(evt.target.textContent.trim() === 'Сохранить') {
+    handleFormSubmitEdit(evt);
+  } else if(evt.target.textContent.trim() === 'Создать') {
+    handleFormSubmitCreate(evt);
+  }
 }
 
 //Функция сохраняет изменения в импутах в текстовые элементы
 function handleFormSubmitEdit (evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-
-  if(nameInputEdit.value.trim() != '' && nameInputEdit.value != null) {
-    let nameInputNew = nameInputEdit.value;
-    let descriptionInputNew = descriptionInputEdit.value;
+  if(inputFormName.value.trim() != '' && inputFormName.value != null) {
+    let nameInputNew = inputFormName.value;
+    let descriptionInputNew = inputFormDescription.value;
 
     nameText.textContent = nameInputNew;
     descriptionText.textContent = descriptionInputNew;
@@ -68,20 +116,18 @@ function handleFormSubmitEdit (evt) {
     handleClosePopup();
   } else {
     //Проверка на заполнение полей
-    errorTextEdit.classList.add('popup__error_active');
-    nameInputEdit.classList.add('popup-form__input_error');
+    errorText.classList.add('popup__error_active');
+    inputFormName.classList.add('popup-form__input_error');
   }
-
-
 }
 
 //Функция создания новой карточки
 function handleFormSubmitCreate (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-  if(titleInputCreate.value != null && titleInputCreate.value.trim() != '' && linkInputCreate.value != null && linkInputCreate.value.trim() != '')
+  if(inputFormTitleCard.value != null && inputFormTitleCard.value.trim() != '' && inputLinkCard.value != null && inputLinkCard.value.trim() != '')
   {
-    createCard(titleInputCreate.value, linkInputCreate.value);
+    createCard(inputFormTitleCard.value, inputLinkCard.value);
 
     //Закрытие модального окна
     handleClosePopup();
@@ -91,20 +137,19 @@ function handleFormSubmitCreate (evt) {
 
   } else {
     //Проверка на заполнение полей
-    errorTextCreate.classList.add('popup__error_active');
+    errorText.classList.add('popup__error_active');
 
-    if((titleInputCreate.value === null || titleInputCreate.value.trim() === '') && (linkInputCreate.value === null || linkInputCreate.value.trim() === '')){
-      titleInputCreate.classList.add('popup-form__input_error');
-      linkInputCreate.classList.add('popup-form__input_error');
-    } else if(linkInputCreate.value === null || linkInputCreate.value.trim() === '') {
-      linkInputCreate.classList.add('popup-form__input_error');
-      titleInputCreate.classList.remove('popup-form__input_error');
-    } else if (titleInputCreate.value === null || titleInputCreate.value.trim() === '') {
-      titleInputCreate.classList.add('popup-form__input_error');
-      linkInputCreate.classList.remove('popup-form__input_error');
+    if((inputFormTitleCard.value === null || inputFormTitleCard.value.trim() === '') && (inputLinkCard.value === null || inputLinkCard.value.trim() === '')){
+      inputFormTitleCard.classList.add('popup-form__input_error');
+      inputLinkCard.classList.add('popup-form__input_error');
+    } else if(inputLinkCard.value === null || inputLinkCard.value.trim() === '') {
+      inputLinkCard.classList.add('popup-form__input_error');
+      inputFormTitleCard.classList.remove('popup-form__input_error');
+    } else if (inputFormTitleCard.value === null || inputFormTitleCard.value.trim() === '') {
+      inputFormTitleCard.classList.add('popup-form__input_error');
+      inputLinkCard.classList.remove('popup-form__input_error');
     }
   }
-
 }
 
 //Нажатие на кнопку Нравится
@@ -122,25 +167,20 @@ function handleGalleryPhoto(event) {
   imgPhoto.alt = event.target.alt;
   descriptionTextPhoto.textContent = event.target.alt;
 
-  handleOpenPopupPhoto();
+  handleOpenPopup('photo');
 }
 
 //Первоначальная загрузка карточек
 initGallery(initialCards);
 
 //Закрытие при нажатие на крестик
-buttonCloseEditForm.addEventListener('click', handleClosePopup);
-buttonCloseCreateForm.addEventListener('click', handleClosePopup);
-buttonClosePhoto.addEventListener('click', handleClosePopup);
+buttonClosePopup.addEventListener('click', handleClosePopup);
 
 //Нажатие на кнопку редактировать
-buttonEditProfile.addEventListener('click', handleOpenPopupEdit);
+buttonEditProfile.addEventListener('click', handleOpenPopup.bind(this, 'edit'));
 
 //Нажатие на кнопку Сохранить модального окна
-formElementEdit.addEventListener('submit', handleFormSubmitEdit);
+formElementCreate.addEventListener('submit', handleFormSubmit);
 
 //Нажатие на кнопку (+)
-buttonCreate.addEventListener('click', handleOpenPopupCreate);
-
-//Нажатие на кнопку Создать модальное окно
-formElementCreate.addEventListener('submit', handleFormSubmitCreate);
+buttonCreate.addEventListener('click', handleOpenPopup.bind(this, 'create'));
