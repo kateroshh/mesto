@@ -10,7 +10,6 @@
   border-radius: 2px;
   border: none;
   transition: opacity 1s ease-out;
-  display: none;
 }
 
 .popup-form__send:hover {
