@@ -31,6 +31,24 @@ function handleClosePopup (popupName) {
   removeClassError();
 }
 
+//Функция закрытие модельного окна при клике на оверлей
+function closePopupOverlay (popupName) {
+  popupName.addEventListener('click', function(evt){
+    if(evt.target === evt.currentTarget) {
+      handleClosePopup(popupName);
+    }
+  });
+}
+
+//Функция закрытие модельного окна при нажатие Esc
+function closePopupEsc(popupName) {
+  document.addEventListener('keydown', (evt) => {
+    if (evt.code === "Escape" && popupName.classList.contains('popup_opened')) {
+      handleClosePopup(popupName);
+    }
+  });
+}
+
 //Удаляем классы с ошибками
 function removeClassError () {
   titleInputCreate.classList.remove('popup-form__input_error');
@@ -50,16 +68,22 @@ function handleOpenPopupEdit () {
   openPopup(popupEdit);
   nameInputEdit.value = nameText.textContent;
   descriptionInputEdit.value = descriptionText.textContent;
+  closePopupOverlay(popupEdit);
+  closePopupEsc(popupEdit);
 }
 
 //Функция открытия модального окна создания карточки
 function handleOpenPopupCreate () {
   openPopup(popupCreate);
+  closePopupOverlay(popupCreate);
+  closePopupEsc(popupCreate);
 }
 
 //Функция открытия модального окна фото
 function handleOpenPopupPhoto () {
   openPopup(popupPhoto);
+  closePopupOverlay(popupPhoto);
+  closePopupEsc(popupPhoto);
 }
 
 //Функция сохраняет изменения в импутах в текстовые элементы
