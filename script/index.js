@@ -68,22 +68,22 @@ function handleOpenPopupEdit () {
   openPopup(popupEdit);
   nameInputEdit.value = nameText.textContent;
   descriptionInputEdit.value = descriptionText.textContent;
-  closePopupOverlay(popupEdit);
-  closePopupEsc(popupEdit);
+  closePopupOverlay(popupEdit); //закрытие по нажатию на овердай
+  closePopupEsc(popupEdit); //закрытие при нажатие на ESC
 }
 
 //Функция открытия модального окна создания карточки
 function handleOpenPopupCreate () {
   openPopup(popupCreate);
-  closePopupOverlay(popupCreate);
-  closePopupEsc(popupCreate);
+  closePopupOverlay(popupCreate); //закрытие по нажатию на овердай
+  closePopupEsc(popupCreate); //закрытие при нажатие на ESC
 }
 
 //Функция открытия модального окна фото
 function handleOpenPopupPhoto () {
   openPopup(popupPhoto);
-  closePopupOverlay(popupPhoto);
-  closePopupEsc(popupPhoto);
+  closePopupOverlay(popupPhoto); //закрытие по нажатию на овердай
+  closePopupEsc(popupPhoto); //закрытие при нажатие на ESC
 }
 
 //Функция сохраняет изменения в импутах в текстовые элементы
