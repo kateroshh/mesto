@@ -28,87 +28,94 @@ function initGallery(items) {
 //Закрытие модального окна
 function handleClosePopup (popupName) {
   popupName.classList.remove('popup_opened');
-  removeClassError();
 }
 
-//Удаляем классы с ошибками
-function removeClassError () {
-  titleInputCreate.classList.remove('popup-form__input_error');
-  linkInputCreate.classList.remove('popup-form__input_error');
-  errorTextCreate.classList.remove('popup__error_active');
-  errorTextEdit.classList.remove('popup__error_active');
-  nameInputEdit.classList.remove('popup-form__input_error');
+//Функция закрытие модельного окна при клике на оверлей
+function closePopupOverlay (popupName) {
+  popupName.addEventListener('click', function(evt){
+    if(evt.target === evt.currentTarget) {
+      handleClosePopup(popupName);
+    }
+  });
+}
+
+//Функция закрытие модельного окна при нажатие Esc
+function closePopupEsc(popupName) {
+  document.addEventListener('keydown', (evt) => {
+    if (evt.code === "Escape" && popupName.classList.contains('popup_opened')) {
+      handleClosePopup(popupName);
+    }
+  });
 }
 
 //Функция при открытие модального окна
 function openPopup (popupName) {
   popupName.classList.add('popup_opened');
+
+  //Проверяем валидность полей ввода
+  enableValidation(validationConfig);
 }
 
 //Функция при открытие модального окна перезает значения текстовых элементов в инпут
 function handleOpenPopupEdit () {
-  openPopup(popupEdit);
+  //Заполняем поля данными для корректной проверки валидации
   nameInputEdit.value = nameText.textContent;
   descriptionInputEdit.value = descriptionText.textContent;
+
+  const inputListEdit = Array.from(formElementEdit.querySelectorAll('.popup-form__input'));
+
+  inputListEdit.forEach(item => {
+    hideInputError(formElementEdit, item, validationConfig);
+  });
+
+  //Открываем модальное окно
+  openPopup(popupEdit);
+
+  closePopupOverlay(popupEdit); //закрытие по нажатию на овердай
+  closePopupEsc(popupEdit); //закрытие при нажатие на ESC
 }
 
 //Функция открытия модального окна создания карточки
 function handleOpenPopupCreate () {
   openPopup(popupCreate);
+  closePopupOverlay(popupCreate); //закрытие по нажатию на овердай
+  closePopupEsc(popupCreate); //закрытие при нажатие на ESC
 }
 
 //Функция открытия модального окна фото
 function handleOpenPopupPhoto () {
   openPopup(popupPhoto);
+  closePopupOverlay(popupPhoto); //закрытие по нажатию на овердай
+  closePopupEsc(popupPhoto); //закрытие при нажатие на ESC
 }
 
 //Функция сохраняет изменения в импутах в текстовые элементы
 function handleFormSubmitEdit (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-  if(nameInputEdit.value.trim() != '' && nameInputEdit.value != null) {
-    let nameInputNew = nameInputEdit.value;
-    let descriptionInputNew = descriptionInputEdit.value;
 
-    nameText.textContent = nameInputNew;
-    descriptionText.textContent = descriptionInputNew;
+  let nameInputNew = nameInputEdit.value;
+  let descriptionInputNew = descriptionInputEdit.value;
 
-    //Закрытие модального окна
-    handleClosePopup(popupEdit);
-  } else {
-    //Проверка на заполнение полей
-    errorTextEdit.classList.add('popup__error_active');
-    nameInputEdit.classList.add('popup-form__input_error');
-  }
+  nameText.textContent = nameInputNew;
+  descriptionText.textContent = descriptionInputNew;
+
+  //Закрытие модального окна
+  handleClosePopup(popupEdit);
+
 }
 
 //Функция создания новой карточки
 function handleFormSubmitCreate (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-  if(titleInputCreate.value != null && titleInputCreate.value.trim() != '' && linkInputCreate.value != null && linkInputCreate.value.trim() != '')
-  {
-    renderCard(createCard(titleInputCreate.value, linkInputCreate.value));
+  renderCard(createCard(titleInputCreate.value, linkInputCreate.value));
 
-    //Закрытие модального окна
-    handleClosePopup(popupCreate);
+  //Закрытие модального окна
+  handleClosePopup(popupCreate);
 
-    formElementCreate.reset();
-  } else {
-    //Проверка на заполнение полей
-    errorTextCreate.classList.add('popup__error_active');
+  formElementCreate.reset();
 
-    if((titleInputCreate.value === null || titleInputCreate.value.trim() === '') && (linkInputCreate.value === null || linkInputCreate.value.trim() === '')){
-      titleInputCreate.classList.add('popup-form__input_error');
-      linkInputCreate.classList.add('popup-form__input_error');
-    } else if(linkInputCreate.value === null || linkInputCreate.value.trim() === '') {
-      linkInputCreate.classList.add('popup-form__input_error');
-      titleInputCreate.classList.remove('popup-form__input_error');
-    } else if (titleInputCreate.value === null || titleInputCreate.value.trim() === '') {
-      titleInputCreate.classList.add('popup-form__input_error');
-      linkInputCreate.classList.remove('popup-form__input_error');
-    }
-  }
 }
 
 //Нажатие на кнопку Нравится

@@ -11,7 +11,6 @@ const popupEdit = document.querySelector('.popup-edit'); //модальное о
 const formElementEdit = popupEdit.querySelector('.popup-form'); //форма редактирования профиля
 const nameInputEdit = formElementEdit.querySelector('#name'); //поле редактирования имени
 const descriptionInputEdit = formElementEdit.querySelector('#description'); //поле редактирования описания
-const errorTextEdit = popupEdit.querySelector('.popup__error'); //сообщение об ошибке
 
 const buttonCloseCreate = document.querySelector('.popup__close_create'); //кнопка крестик
 const buttonCreate = document.querySelector('.profile__add'); //кнопка создание новой карточки
@@ -19,7 +18,6 @@ const popupCreate = document.querySelector('.popup-create'); //модально�
 const formElementCreate = popupCreate.querySelector('.popup-form'); //форма создания карточки
 const titleInputCreate = formElementCreate.querySelector('#title-card'); //поле заголовка карточки
 const linkInputCreate = formElementCreate.querySelector('#link-card'); //поле ссылка на картинку
-const errorTextCreate = popupCreate.querySelector('.popup__error'); //сообщение об ошибке
 
 
 const popupPhoto = document.querySelector('.popup-photo'); //модальное окно фото

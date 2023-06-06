@@ -52,4 +52,6 @@
 @import url(../blocks/popup-form/popup-form.css);
 @import url(../blocks/popup-form/__input/popup-form__input.css);
 @import url(../blocks/popup-form/__send/popup-form__send.css);
+@import url(../blocks/popup-form/__send/_inactive/popup-form__send_inactive.css);
 @import url(../blocks/popup-form/__input/_error/popup-form__input_error.css);
+@import url(../blocks/popup-form/__error/popup-form__error.css);
