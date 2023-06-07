@@ -86,3 +86,9 @@ const isValid = (formElement, inputElement, validationConfig) => {
     hideInputError(formElement, inputElement, validationConfig);
   }
 };
+
+const removeValidationErrors = (inputList, formElement, validationConfig) => {
+  inputList.forEach(item => {
+    hideInputError(formElement, item, validationConfig);
+  });
+}
