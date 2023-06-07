@@ -1,12 +1,15 @@
 //Создание карточки и событий на карточки
 function createCard(name, link) {
   const itemElement = galleryItemTemplate.cloneNode(true);
+  const itemElementImg = itemElement.querySelector('.gallery-item__img');
+
   itemElement.querySelector('.gallery-item__text').innerText = name;
-  itemElement.querySelector('.gallery-item__img').src = link;
-  itemElement.querySelector('.gallery-item__img').alt = name;
-  itemElement.querySelector('.gallery-item__img').addEventListener('click', handleGalleryPhoto);
+  itemElementImg.src = link;
+  itemElementImg.alt = name;
+  itemElementImg.addEventListener('click', handleGalleryPhoto);
   itemElement.querySelector('.gallery-item__like').addEventListener('click', handleGalleryLike);
   itemElement.querySelector('.gallery-item__delete').addEventListener('click', handleGalleryDelete);
+
   return itemElement;
 }
 
@@ -26,34 +29,45 @@ function initGallery(items) {
 }
 
 //Закрытие модального окна
-function handleClosePopup (popupName) {
-  popupName.classList.remove('popup_opened');
+function handleClosePopup () {
+  const openedPopup = document.querySelector('.popup_opened');
+  openedPopup.classList.remove('popup_opened');
+
+  openedPopup.removeEventListener('click', closePopupOverlay);
 }
 
 //Функция закрытие модельного окна при клике на оверлей
-function closePopupOverlay (popupName) {
-  popupName.addEventListener('click', function(evt){
-    if(evt.target === evt.currentTarget) {
-      handleClosePopup(popupName);
-    }
-  });
+const closePopupOverlay = (evt) => {
+  if(evt.target === evt.currentTarget) {
+    handleClosePopup();
+  }
+}
+
+//Слушатель на закрытие
+function setEventListenerClosePopupClick () {
+  document.querySelector('.popup_opened').addEventListener('click', closePopupOverlay);
 }
 
 //Функция закрытие модельного окна при нажатие Esc
-function closePopupEsc(popupName) {
-  document.addEventListener('keydown', (evt) => {
-    if (evt.code === "Escape" && popupName.classList.contains('popup_opened')) {
-      handleClosePopup(popupName);
-    }
-  });
+const closePopupEsc = (evt) => {
+  const openedPopup = document.querySelector('.popup_opened');
+
+  if (evt.code === "Escape" && openedPopup) {
+    handleClosePopup();
+  }
+}
+
+//Слушатель на закрытие
+function setEventListenerClosePopupEsc () {
+  document.addEventListener('keydown', closePopupEsc);
 }
 
 //Функция при открытие модального окна
 function openPopup (popupName) {
   popupName.classList.add('popup_opened');
 
-  //Проверяем валидность полей ввода
-  enableValidation(validationConfig);
+  setEventListenerClosePopupClick(); //закрытие по нажатию на овердай
+  setEventListenerClosePopupEsc(); //закрытие при нажатие на ESC
 }
 
 //Функция при открытие модального окна перезает значения текстовых элементов в инпут
@@ -62,47 +76,38 @@ function handleOpenPopupEdit () {
   nameInputEdit.value = nameText.textContent;
   descriptionInputEdit.value = descriptionText.textContent;
 
-  const inputListEdit = Array.from(formElementEdit.querySelectorAll('.popup-form__input'));
+  removeValidationErrors (inputListEdit, formElementEdit, validationConfig);
 
-  inputListEdit.forEach(item => {
-    hideInputError(formElementEdit, item, validationConfig);
-  });
+  //Активируем кнопку сохранить при открытие Модального окна
+  buttonSaveEdit.removeAttribute('disabled');
+  buttonSaveEdit.classList.remove(validationConfig.inactiveButtonClass);
 
   //Открываем модальное окно
   openPopup(popupEdit);
-
-  closePopupOverlay(popupEdit); //закрытие по нажатию на овердай
-  closePopupEsc(popupEdit); //закрытие при нажатие на ESC
 }
 
 //Функция открытия модального окна создания карточки
 function handleOpenPopupCreate () {
   openPopup(popupCreate);
-  closePopupOverlay(popupCreate); //закрытие по нажатию на овердай
-  closePopupEsc(popupCreate); //закрытие при нажатие на ESC
 }
 
 //Функция открытия модального окна фото
 function handleOpenPopupPhoto () {
   openPopup(popupPhoto);
-  closePopupOverlay(popupPhoto); //закрытие по нажатию на овердай
-  closePopupEsc(popupPhoto); //закрытие при нажатие на ESC
 }
 
 //Функция сохраняет изменения в импутах в текстовые элементы
 function handleFormSubmitEdit (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-
-  let nameInputNew = nameInputEdit.value;
-  let descriptionInputNew = descriptionInputEdit.value;
+  const nameInputNew = nameInputEdit.value;
+  const descriptionInputNew = descriptionInputEdit.value;
 
   nameText.textContent = nameInputNew;
   descriptionText.textContent = descriptionInputNew;
 
   //Закрытие модального окна
-  handleClosePopup(popupEdit);
-
+  handleClosePopup();
 }
 
 //Функция создания новой карточки
@@ -112,10 +117,9 @@ function handleFormSubmitCreate (evt) {
   renderCard(createCard(titleInputCreate.value, linkInputCreate.value));
 
   //Закрытие модального окна
-  handleClosePopup(popupCreate);
+  handleClosePopup();
 
   formElementCreate.reset();
-
 }
 
 //Нажатие на кнопку Нравится
@@ -140,9 +144,9 @@ function handleGalleryPhoto(event) {
 initGallery(initialCards);
 
 //Закрытие при нажатие на крестик
-buttonCloseEdit.addEventListener('click', handleClosePopup.bind(this, popupEdit));
-buttonCloseCreate.addEventListener('click', handleClosePopup.bind(this, popupCreate));
-buttonClosePhoto.addEventListener('click', handleClosePopup.bind(this, popupPhoto));
+buttonCloseEdit.addEventListener('click', handleClosePopup);
+buttonCloseCreate.addEventListener('click', handleClosePopup);
+buttonClosePhoto.addEventListener('click', handleClosePopup);
 
 //Нажатие на кнопку редактировать
 buttonEditProfile.addEventListener('click', handleOpenPopupEdit);
