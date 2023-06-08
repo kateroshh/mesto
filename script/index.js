@@ -29,23 +29,23 @@ function initGallery(items) {
 }
 
 //Закрытие модального окна
-function handleClosePopup () {
-  const openedPopup = document.querySelector('.popup_opened');
-  openedPopup.classList.remove('popup_opened');
+function handleClosePopup (popup) {
+  //const openedPopup = document.querySelector('.popup_opened');
+  popup.classList.remove('popup_opened');
 
-  openedPopup.removeEventListener('click', closePopupOverlay);
+  popup.removeEventListener('click', closePopupOverlay);
 }
 
 //Функция закрытие модельного окна при клике на оверлей
 const closePopupOverlay = (evt) => {
   if(evt.target === evt.currentTarget) {
-    handleClosePopup();
+    handleClosePopup(evt.target);
   }
 }
 
 //Слушатель на закрытие
-function setEventListenerClosePopupClick () {
-  document.querySelector('.popup_opened').addEventListener('click', closePopupOverlay);
+function setEventListenerClosePopupClick (popup) {
+  popup.addEventListener('click', closePopupOverlay);
 }
 
 //Функция закрытие модельного окна при нажатие Esc
@@ -53,7 +53,7 @@ const closePopupEsc = (evt) => {
   const openedPopup = document.querySelector('.popup_opened');
 
   if (evt.code === "Escape" && openedPopup) {
-    handleClosePopup();
+    handleClosePopup(openedPopup);
   }
 }
 
@@ -66,7 +66,7 @@ function setEventListenerClosePopupEsc () {
 function openPopup (popupName) {
   popupName.classList.add('popup_opened');
 
-  setEventListenerClosePopupClick(); //закрытие по нажатию на овердай
+  setEventListenerClosePopupClick(popupName); //закрытие по нажатию на овердай
   setEventListenerClosePopupEsc(); //закрытие при нажатие на ESC
 }
 
@@ -79,8 +79,7 @@ function handleOpenPopupEdit () {
   removeValidationErrors (inputListEdit, formElementEdit, validationConfig);
 
   //Активируем кнопку сохранить при открытие Модального окна
-  buttonSaveEdit.removeAttribute('disabled');
-  buttonSaveEdit.classList.remove(validationConfig.inactiveButtonClass);
+  enableSubmitButton(buttonSaveEdit, validationConfig);
 
   //Открываем модальное окно
   openPopup(popupEdit);
@@ -107,7 +106,7 @@ function handleFormSubmitEdit (evt) {
   descriptionText.textContent = descriptionInputNew;
 
   //Закрытие модального окна
-  handleClosePopup();
+  handleClosePopup(popupEdit);
 }
 
 //Функция создания новой карточки
@@ -117,7 +116,7 @@ function handleFormSubmitCreate (evt) {
   renderCard(createCard(titleInputCreate.value, linkInputCreate.value));
 
   //Закрытие модального окна
-  handleClosePopup();
+  handleClosePopup(popupCreate);
 
   formElementCreate.reset();
 }
@@ -144,9 +143,9 @@ function handleGalleryPhoto(event) {
 initGallery(initialCards);
 
 //Закрытие при нажатие на крестик
-buttonCloseEdit.addEventListener('click', handleClosePopup);
-buttonCloseCreate.addEventListener('click', handleClosePopup);
-buttonClosePhoto.addEventListener('click', handleClosePopup);
+buttonCloseEdit.addEventListener('click', handleClosePopup.bind(this, popupEdit));
+buttonCloseCreate.addEventListener('click', handleClosePopup.bind(this, popupCreate));
+buttonClosePhoto.addEventListener('click', handleClosePopup.bind(this, popupPhoto));
 
 //Нажатие на кнопку редактировать
 buttonEditProfile.addEventListener('click', handleOpenPopupEdit);
