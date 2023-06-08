@@ -92,3 +92,9 @@ const removeValidationErrors = (inputList, formElement, validationConfig) => {
     hideInputError(formElement, item, validationConfig);
   });
 }
+
+//Активируем кнопку при открытие Модального окна
+const enableSubmitButton = (buttonItem, validationConfig) => {
+  buttonItem.removeAttribute('disabled');
+  buttonItem.classList.remove(validationConfig.inactiveButtonClass);
+}
