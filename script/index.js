@@ -1,7 +1,6 @@
 import Card from './Card.js';
 import initialCards from './init-cards.js';
-import FormValidator from './FormValidator.js';
-import validationConfig from './validate.js';
+import { FormValidator, validFormEdit, validFormCreate } from './FormValidator.js';
 
 //Добавление карточки на страницу
 function renderCard(card) {
@@ -18,7 +17,7 @@ function initGallery(items) {
 //Создание карточки
 function createCard(item) {
   //Создаём класс карточки
-  const card = new Card (item, '.gallery-item-template');
+  const card = new Card (item, '.gallery-item-template', handleCardClick);
   //добавляем карточку в разметку
   const cardElement = card.generate();
 
@@ -31,6 +30,7 @@ function handleClosePopup (popup) {
   //const openedPopup = document.querySelector('.popup_opened');
   popup.classList.remove('popup_opened');
 
+  popup.removeEventListener('click', closePopupEsc);
   popup.removeEventListener('click', closePopupOverlay);
 }
 
@@ -48,9 +48,9 @@ function setEventListenerClosePopupClick (popup) {
 
 //Функция закрытие модельного окна при нажатие Esc
 const closePopupEsc = (evt) => {
-  const openedPopup = document.querySelector('.popup_opened');
+  if (evt.code === "Escape") {
+    const openedPopup = document.querySelector('.popup_opened');
 
-  if (evt.code === "Escape" && openedPopup) {
     handleClosePopup(openedPopup);
   }
 }
@@ -68,24 +68,31 @@ function openPopup (popupName) {
   setEventListenerClosePopupEsc(); //закрытие при нажатие на ESC
 }
 
+function handleCardClick(name, link) {
+  imgPhoto.src = event.target.src;
+  imgPhoto.alt = event.target.alt;
+  descriptionTextPhoto.textContent = event.target.alt;
+
+  openPopup(popupPhoto);
+}
+
 //Функция при открытие модального окна перезает значения текстовых элементов в инпут
 function handleOpenPopupEdit () {
   //Заполняем поля данными для корректной проверки валидации
   nameInputEdit.value = nameText.textContent;
   descriptionInputEdit.value = descriptionText.textContent;
 
-  const validFormEdit = new FormValidator(formElementEdit, validationConfig);
-  validFormEdit.enableValidation();
-
+  //Настройка формы при открытие
+  validFormEdit.resetValidation();
   //Открываем модальное окно
   openPopup(popupEdit);
 }
 
 //Функция открытия модального окна создания карточки
 function handleOpenPopupCreate () {
-  const validFormEdit = new FormValidator(formElementCreate, validationConfig);
-  validFormEdit.enableValidation();
-
+  //Настройка формы при открытие
+  validFormCreate.resetValidation();
+  //Открываем модальное окно
   openPopup(popupCreate);
 }
 
@@ -120,12 +127,16 @@ function handleFormSubmitCreate (evt) {
   formElementCreate.reset();
 }
 
+//Универсальный обработчик закрытия попапов на крестик
+closeButtons.forEach((button) => {
+  // находим ближайший к крестику попап
+  const popup = button.closest('.popup');
+  // устанавливаем обработчик закрытия на крестик
+  button.addEventListener('click', () => handleClosePopup(popup));
+});
+
 //Первоначальная загрузка карточек
 initGallery(initialCards);
-
-//Закрытие при нажатие на крестик
-buttonCloseEdit.addEventListener('click', handleClosePopup.bind(this, popupEdit));
-buttonCloseCreate.addEventListener('click', handleClosePopup.bind(this, popupCreate));
 
 //Нажатие на кнопку редактировать
 buttonEditProfile.addEventListener('click', handleOpenPopupEdit);
