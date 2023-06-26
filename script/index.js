@@ -1,6 +1,7 @@
 import Card from './Card.js';
 import initialCards from './init-cards.js';
-import { FormValidator, validFormEdit, validFormCreate } from './FormValidator.js';
+import FormValidator from './FormValidator.js';
+import validationConfig from './validate.js';
 
 //Добавление карточки на страницу
 function renderCard(card) {
@@ -9,18 +10,21 @@ function renderCard(card) {
 
 //Загрузка карточек при открытие сайта
 function initGallery(items) {
-  items.forEach(item => {
-    createCard(item);
-  });
+  items.forEach(createCard);
 }
 
-//Создание карточки
-function createCard(item) {
+
+function getCard(item) {
   //Создаём класс карточки
   const card = new Card (item, '.gallery-item-template', handleCardClick);
   //добавляем карточку в разметку
   const cardElement = card.generate();
+  return cardElement;
+}
 
+//Создание карточки
+function createCard(item) {
+  const cardElement = getCard(item);
   //Добавляем её в разметку
   renderCard(cardElement);
 }
@@ -30,7 +34,7 @@ function handleClosePopup (popup) {
   //const openedPopup = document.querySelector('.popup_opened');
   popup.classList.remove('popup_opened');
 
-  popup.removeEventListener('click', closePopupEsc);
+  document.removeEventListener('keydown', closePopupEsc);
   popup.removeEventListener('click', closePopupOverlay);
 }
 
@@ -69,9 +73,9 @@ function openPopup (popupName) {
 }
 
 function handleCardClick(name, link) {
-  imgPhoto.src = event.target.src;
-  imgPhoto.alt = event.target.alt;
-  descriptionTextPhoto.textContent = event.target.alt;
+  imgPhoto.src = link;
+  imgPhoto.alt = name;
+  descriptionTextPhoto.textContent = name;
 
   openPopup(popupPhoto);
 }
@@ -149,3 +153,10 @@ buttonCreate.addEventListener('click', handleOpenPopupCreate);
 
 //Нажатие на кнопку Создать модальное окно
 formElementCreate.addEventListener('submit', handleFormSubmitCreate);
+
+//Проверка валидности форм
+const validFormEdit = new FormValidator(formElementEdit, validationConfig);
+validFormEdit.enableValidation();
+
+const validFormCreate = new FormValidator(formElementCreate, validationConfig);
+validFormCreate.enableValidation();

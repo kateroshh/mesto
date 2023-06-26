@@ -1,11 +1,9 @@
-import validationConfig from './validate.js';
-
-class FormValidator {
+export default class FormValidator {
 	constructor(form, config) {
     this._config = config;
     this._form = form;
-    this._inputList = Array.from(this._form.querySelectorAll(validationConfig.inputSelector));
-    this._submitButton = this._form.querySelector(validationConfig.submitButtonSelector);
+    this._inputList = Array.from(this._form.querySelectorAll(this._config.inputSelector));
+    this._submitButton = this._form.querySelector(this._config.submitButtonSelector);
 	}
 
   //Проверка валидности полей ввода
@@ -54,7 +52,7 @@ class FormValidator {
 
   //Находит все формы и вешает на поля ввода слушатель событий
   enableValidation = () => {
-    this._setEventListeners(this._form);
+    this._setEventListeners();
   }
 
   //Добавляет класс с ошибкой
@@ -85,18 +83,4 @@ class FormValidator {
       this._hideInputError(inputElement, this._config);
     }
   }
-
-  _removeValidationErrors = () => {
-    this._inputList.forEach(item => {
-      this._hideInputError(item, this._config);
-    });
-  }
 }
-
-const validFormEdit = new FormValidator(formElementEdit, validationConfig);
-validFormEdit.enableValidation();
-
-const validFormCreate = new FormValidator(formElementCreate, validationConfig);
-validFormCreate.enableValidation();
-
-export { FormValidator, validFormEdit, validFormCreate };
