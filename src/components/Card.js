@@ -11,7 +11,6 @@ export default class Card {
   	const galleryElement = document
       .querySelector(this._selector)
       .content
-      // .querySelector('.gallery-item')
       .cloneNode(true);
 
     return galleryElement;

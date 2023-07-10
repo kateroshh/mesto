@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="pages/index.css">
   <title>Mesto</title>
 </head>
 <body>
   <div class="page">
     <header class="header">
-      <img class="header__logo" src="images/header__logo.svg" alt="Логотип">
+      <img class="header__logo" src="<%=require('./images/header__logo.svg')%>" alt="Логотип">
     </header>
     <main class="content">
       <section class="profile">
         <div class="profile-info">
-          <img class="profile-info__avatar" src="images/avatar.jpg" alt="Фото профиля">
+          <img class="profile-info__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Фото профиля">
           <!-- заданы размеры в css не смогла понять как исправить замечание -->
           <div class="profile-info__text">
             <div class="profile-info__name">
@@ -46,9 +45,9 @@
         <form class="popup__form popup-form" name="edit-profile">
           <input class="popup-form__input" type="text" id="name" name="edit-profile__name" placeholder="Ваше имя" minlength="2" maxlength="40" required>
           <span class="popup-form__error name-error"></span>
-          <input class="popup-form__input" type="text" id="description" name="edit-profile__description" placeholder="Ваша профессия" minlength="2" maxlength="200" required>
+          <input class="popup-form__input" type="text" id="description" name="edit-profile__link" placeholder="Ваша профессия" minlength="2" maxlength="200" required>
           <span class="popup-form__error description-error"></span>
-          <button class="popup-form__send" type="submit">Сохранить</button>
+          <button class="popup-form__send" type="submit" disabled="false">Сохранить</button>
         </form>
         <button class="popup__close popup__close_edit" aria-label="Закрыть" type="button"></button>
       </div>
@@ -59,7 +58,7 @@
         <h3 class="popup__text">Новое место</h3>
         <p class="popup__error">Заполните обязательные поля</p>
         <form class="popup__form popup-form" name="create-card">
-          <input class="popup-form__input" type="text" id="title-card" name="create-card__title" placeholder="Название" minlength="2" maxlength="30" required>
+          <input class="popup-form__input" type="text" id="title-card" name="create-card__name" placeholder="Название" minlength="2" maxlength="30" required>
           <span class="popup-form__error title-card-error"></span>
           <input class="popup-form__input" type="url" id="link-card" name="create-card__link" placeholder="Ссылка на картинку" required>
           <span class="popup-form__error link-card-error"></span>
@@ -72,7 +71,7 @@
 
     <div class="popup popup-photo">
       <div class="popup__container popup__container_photo">
-        <img class="popup__img" src="images/gallery/img_7.png" alt="Карачаевск">
+        <img class="popup__img" src="<%=require('./images/gallery/img_7.png')%>" alt="Карачаевск">
         <p class="popup__description">Название карточки</p>
         <button class="popup__close popup__close_photo" aria-label="Закрыть" type="button"></button>
       </div>
@@ -82,7 +81,7 @@
 
   <template class="gallery-item-template">
     <li class="gallery-item">
-      <img class="gallery-item__img" src="images/gallery/img_1.jpg" alt="Карачаевск">
+      <img class="gallery-item__img" src="<%=require('./images/gallery/img_1.jpg')%>" alt="Карачаевск">
       <div class="gallery-item__info">
         <h2 class="gallery-item__text">Карачаевск</h2>
         <button class="gallery-item__like" aria-label="Нравится" type="button"></button>
@@ -92,8 +91,8 @@
   </template>
 
   <!-- <script src="script/init-cards.js"></script> -->
-  <script src="script/constants.js"></script>
+  <!-- <script src="script/constants.js"></script>
   <script type="module" src="script/validate.js"></script>
-  <script type="module" src="script/index.js"></script>
+  <script type="module" src="script/index.js"></script> -->
 </body>
 </html>
