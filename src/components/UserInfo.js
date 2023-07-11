@@ -11,8 +11,8 @@ export default class UserInfo {
     }
   }
 
-  setUserInfo(inputName, inputInfo) {
-    this._userName.textContent = inputName;
-    this._userInfo.textContent = inputInfo;
+  setUserInfo(data) {
+    this._userName.textContent = data.name;
+    this._userInfo.textContent = data.link;
   }
 }
