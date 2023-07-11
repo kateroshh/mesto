@@ -5,7 +5,6 @@ export const buttonEditProfile = document.querySelector('.profile-info__edit'); 
 export const nameText = document.querySelector('.profile-info__nametext'); //текстовый элемент имя
 export const descriptionText = document.querySelector('.profile-info__description'); //текстовый элемент описание
 
-export const popup = document.querySelector('.popup'); //модальное окно
 export const popupEdit = document.querySelector('.popup-edit'); //модальное окно
 export const formElementEdit = popupEdit.querySelector('.popup-form'); //форма редактирования профиля
 export const nameInputEdit = formElementEdit.querySelector('#name'); //поле редактирования имени
