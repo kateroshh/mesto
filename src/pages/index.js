@@ -9,72 +9,65 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 
+//Создание карточки
+function createCard(item) {
+  const card = new Card (item, '.gallery-item-template', handleCardClick);
+  const cardElement = card.generate();
+  cardsList.addItem(cardElement);
+}
+
 const cardsList = new Section(
   {
-    items: initialCards,
-    renderer: (item) => {
-      const card = new Card (item, '.gallery-item-template', handleCardClick);
-      const cardElement = card.generate();
-      cardsList.addItem(cardElement);
-    },
+    renderer: (item) => createCard(item)
   },
   '.gallery-items',
 );
 
-cardsList.renderItems();
+cardsList.renderItems(initialCards);
 
 //Закрытие модального окна для передачи в класс Card
 function handleCardClick(name, link) {
-  const popupPhoto = new PopupWithImage(constants.popupPhoto, name, link);
-  popupPhoto.open();
-  popupPhoto.setEventListeners();
+  popupPhoto.open(name, link);
 }
 
 //Функция сохраняет изменения в импутах в текстовые элементы
-function handleFormSubmitEdit () {
-  const nameInputEdit = document.querySelector('#name'); //поле редактирования имени
-  const descriptionInputEdit = document.querySelector('#description'); //поле редактирования описания
-
-  userInfo.setUserInfo(nameInputEdit.value, descriptionInputEdit.value);
+function handleFormSubmitEdit (data) {
+  userInfo.setUserInfo(data);
+  popupEdit.close();
 }
 
 //Функция создания новой карточки
 function handleFormSubmitCreate (objItem) {
-  //Создание новой карточки через класс Section
-  const newCard = new Section(
-    {
-      items: objItem,
-      renderer: (item) => {
-        const card = new Card (item, '.gallery-item-template', handleCardClick);
-        const cardElement = card.generate();
-        cardsList.addItem(cardElement);
-      },
-    },
-    '.gallery-items',
-  );
-
-  newCard.renderItems();
+  createCard(objItem);
+  popupCreate.close();
 }
 
 const userInfo = new UserInfo({userName: '.profile-info__nametext', userInfo: '.profile-info__description'});
 
 //Нажатие на кнопку редактировать
 const popupEdit = new PopupWithForm(constants.popupEdit, handleFormSubmitEdit);
+popupEdit.setEventListeners();
 
 constants.buttonEditProfile.addEventListener('click', () => {
   const userData = userInfo.getUserInfo();
   constants.nameInputEdit.value = userData.userName;
   constants.descriptionInputEdit.value = userData.userInfo;
 
+  validFormEdit.resetValidation();
   popupEdit.open();
-  popupEdit.setEventListeners();
 });
+
+//Модальное окно с картинкой
+const popupPhoto = new PopupWithImage(constants.popupPhoto);
+popupPhoto.setEventListeners();
 
 //Нажатие на кнопку (+)
 const popupCreate = new PopupWithForm(constants.popupCreate, handleFormSubmitCreate);
+popupCreate.setEventListeners();
+
 constants.buttonCreate.addEventListener('click', () => {
+  validFormCreate.resetValidation();
   popupCreate.open();
-  popupCreate.setEventListeners();
 });
 
 //Проверка валидности форм

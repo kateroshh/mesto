@@ -2,11 +2,14 @@ export default class Popup {
   constructor(popup) {
     this._popup = popup;
     this._closeButton = popup.querySelector('.popup__close');
+    this._handleOverlayClose = this._handleOverlayClose.bind(this);
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
 
   //Открытие модального окна
   open() {
     this._popup.classList.add('popup_opened');
+    document.addEventListener('keydown', this._handleEscClose.bind(this));
   }
 
   //Закрытие модального окна
@@ -15,7 +18,6 @@ export default class Popup {
 
     //Удаление слушателей событий при закрытие модального окна
     document.removeEventListener('keydown', this._handleEscClose);
-    this._popup.removeEventListener('click', this._handleOverlayClose);
   }
 
   //Закрытие модального окна при нажатие на кнопку ESC
@@ -34,8 +36,7 @@ export default class Popup {
 
   //Установка слушателей событий
   setEventListeners() {
-    this._closeButton.addEventListener('click', () => this.close());
-    document.addEventListener('keydown', (evt) => this._handleEscClose(evt));
-    this._popup.addEventListener('click', (evt) => this._handleOverlayClose(evt));
+    this._closeButton.addEventListener('click', this.close.bind(this));
+    this._popup.addEventListener('click', this._handleOverlayClose.bind(this));
   }
 }
