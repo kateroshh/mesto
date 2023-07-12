@@ -9,7 +9,7 @@ export default class Popup {
   //Открытие модального окна
   open() {
     this._popup.classList.add('popup_opened');
-    document.addEventListener('keydown', this._handleEscClose.bind(this));
+    document.addEventListener('keydown', this._handleEscClose);
   }
 
   //Закрытие модального окна
@@ -37,6 +37,6 @@ export default class Popup {
   //Установка слушателей событий
   setEventListeners() {
     this._closeButton.addEventListener('click', this.close.bind(this));
-    this._popup.addEventListener('click', this._handleOverlayClose.bind(this));
+    this._popup.addEventListener('click', this._handleOverlayClose);
   }
 }
