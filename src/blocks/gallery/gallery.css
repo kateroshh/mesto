@@ -1,9 +1,0 @@
-.gallery {
-  margin-bottom: 66px;
-}
-
-@media screen and (max-width: 700px) {
-  .gallery {
-    margin-bottom: 50px;
-  }
-}
