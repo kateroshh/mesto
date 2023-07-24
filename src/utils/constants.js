@@ -4,6 +4,10 @@ export const galleryItems = document.querySelector('.gallery-items'); //мест
 export const buttonEditProfile = document.querySelector('.profile-info__edit'); //кнопка редактирование профиля
 export const nameText = document.querySelector('.profile-info__nametext'); //текстовый элемент имя
 export const descriptionText = document.querySelector('.profile-info__description'); //текстовый элемент описание
+export const buttonEditAvatar = document.querySelector('.profile-info__avatar'); //аватар пользователя
+export const popupAvatar = document.querySelector('.popup-avatar'); //модальное окно
+export const avatarInput = document.querySelector('#avatar'); //модальное окно
+export const formElementAvatar = popupAvatar.querySelector('.popup-form'); //форма создания карточки
 
 export const popupEdit = document.querySelector('.popup-edit'); //модальное окно
 export const formElementEdit = popupEdit.querySelector('.popup-form'); //форма редактирования профиля
@@ -16,6 +20,7 @@ export const popupCreate = document.querySelector('.popup-create'); //модал
 export const formElementCreate = popupCreate.querySelector('.popup-form'); //форма создания карточки
 export const titleInputCreate = formElementCreate.querySelector('#title-card'); //поле заголовка карточки
 export const linkInputCreate = formElementCreate.querySelector('#link-card'); //поле ссылка на картинку
+export const popupDeleteCard = document.querySelector('.popup-delete-card'); //модальное окно удаления карточки
 
 export const popupPhoto = document.querySelector('.popup-photo'); //модальное окно фото
 export const imgPhoto = document.querySelector('.popup__img'); //картинка

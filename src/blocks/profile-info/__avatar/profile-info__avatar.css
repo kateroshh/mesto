@@ -6,6 +6,16 @@
   width: 120px;
   height: 120px;
   margin: 0 30px 0 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.profile-info__avatar:hover + .profile-info__avatar_hover {
+  display: block;
+}
+
+.profile-info__avatar:hover {
+  opacity: 0.2;
 }
 
 @media screen and (max-width: 700px) {
