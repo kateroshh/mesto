@@ -10,8 +10,8 @@
   position: relative;
 }
 
-.profile-info__avatar:hover + .profile-info__avatar_hover {
-  display: block;
+.profile-info__avatar:hover + .profile-info__avatar-hover {
+  opacity: 1;
 }
 
 .profile-info__avatar:hover {
