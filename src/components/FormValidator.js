@@ -14,6 +14,7 @@ export default class FormValidator {
   }
 
   resetValidation() {
+    //
     this._toggleButtonState(); //уплавление кнопкой
 
     this._inputList.forEach((inputElement) => {

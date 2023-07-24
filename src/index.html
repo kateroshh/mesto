@@ -13,14 +13,14 @@
     <main class="content">
       <section class="profile">
         <div class="profile-info">
-          <img class="profile-info__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Фото профиля">
-          <!-- заданы размеры в css не смогла понять как исправить замечание -->
+          <img class="profile-info__avatar" src="" alt="Фото профиля">
+          <div class="profile-info__avatar_hover"></div>
           <div class="profile-info__text">
             <div class="profile-info__name">
-              <h1 class="profile-info__nametext">Жак-Ив Кусто</h1>
+              <h1 class="profile-info__nametext"></h1>
               <button class="profile-info__edit" aria-label="Редактировать" type="button"></button>
             </div>
-            <p class="profile-info__description">Исследователь океана</p>
+            <p class="profile-info__description"></p>
           </div>
         </div>
         <button class="profile__add" aria-label="Добавить" type="button"></button>
@@ -68,12 +68,34 @@
       </div>
     </div>
 
+    <div class="popup popup-avatar">
+      <div class="popup__container">
+        <h3 class="popup__text">Обновить аватар</h3>
+        <p class="popup__error">Заполните обязательные поля</p>
+        <form class="popup__form popup-form" name="create-card">
+          <input class="popup-form__input" type="url" id="avatar" name="avatar" placeholder="Укажите ссылку на аватал пользователя" minlength="2" maxlength="500" required>
+          <span class="popup-form__error avatar-error"></span>
+          <button class="popup-form__send" type="submit" disabled="false">Сохранить</button>
+        </form>
+        <button class="popup__close popup__close_avatar" aria-label="Закрыть" type="button"></button>
+      </div>
+    </div>
 
     <div class="popup popup-photo">
       <div class="popup__container popup__container_photo">
         <img class="popup__img" src="<%=require('./images/gallery/img_7.png')%>" alt="Карачаевск">
         <p class="popup__description">Название карточки</p>
         <button class="popup__close popup__close_photo" aria-label="Закрыть" type="button"></button>
+      </div>
+    </div>
+
+    <div class="popup popup-delete-card">
+      <div class="popup__container">
+        <h3 class="popup__text">Вы уверены?</h3>
+        <form class="popup__form popup-form" name="delete-card">
+          <button class="popup-form__send" type="submit">Да</button>
+        </form>
+        <button class="popup__close popup__close_delete-card" aria-label="Закрыть" type="button"></button>
       </div>
     </div>
 
@@ -84,7 +106,11 @@
       <img class="gallery-item__img" src="<%=require('./images/gallery/img_1.jpg')%>" alt="Карачаевск">
       <div class="gallery-item__info">
         <h2 class="gallery-item__text">Карачаевск</h2>
-        <button class="gallery-item__like" aria-label="Нравится" type="button"></button>
+        <div class="gallery-item__like">
+          <button class="gallery-item__btnlike" aria-label="Нравится" type="button"></button>
+          <p class="gallery-item__textlikes">0</p>
+        </div>
+
       </div>
       <button class="gallery-item__delete" aria-label="Удалить" type="button"></button>
     </li>

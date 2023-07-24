@@ -6,7 +6,10 @@ export default class Section {
 
   renderItems(items) {
     items.forEach(item => {
-      this._renderer(item);
+      //для теста
+      //if(item.owner._id === '381eb7a7e0a4faf6ee0010f1') {
+        this._renderer(item);
+      //}
     });
   }
 
