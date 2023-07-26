@@ -17,189 +17,177 @@ const api = new Api({
   }
 });
 
-//Получаем текущего пользователя
-api.getCurrentUser()
-.then((currentUser) => {
-  //Start Promise
+//Данные пользователя
+const userInfo = new UserInfo({userName: '.profile-info__nametext', userInfo: '.profile-info__description', userAvatar: '.profile-info__avatar'});
 
-  //Первоначальная загрузка карточек
-  api.getInitialCards()
-    .then((result) => {
-      cardsList.renderItems(result);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    });
+//Список карточек
+const cardsList = new Section(
+  {
+    renderer: (item, currentUserId) => {
+      const card = createCard(item, currentUserId);
+      cardsList.addItem(card);
+    }
+  },
+  '.gallery-items',
+);
 
-  //Создание карточки
-  function createCard(item) {
-    const card = new Card (
-      item,
-      '.gallery-item-template',
-      handleCardClick,
-      handleClickDelete,
-      handleClickLike,
-      currentUser
-      );
-    const cardElement = card.generate();
-    cardsList.addItem(cardElement);
-  }
+Promise.all([ api.getUserInfo(), api.getInitialCards() ])
+  .then(([ userData, cardData ]) => {
+    userInfo.setUserInfo(userData);
+    userInfo.setUserAvatar(userData.avatar);
 
-
-  const cardsList = new Section(
-    {
-      renderer: (item) => createCard(item)
-    },
-    '.gallery-items',
-  );
-
-  //Закрытие модального окна для передачи в класс Card
-  function handleCardClick(name, link) {
-    popupPhoto.open(name, link);
-  }
-
-  //Функция сохраняет изменения в импутах в текстовые элементы
-  function handleFormSubmitEdit (data, btnSubmit) {
-    api.saveUserInfo(data)
-    .then((result) => {
-      userInfo.setUserInfo(result);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    })
-    .finally(() => {
-      popupEdit.close();
-      btnSubmit.textContent = 'Сохранить';
-    });
-  }
-
-  //Функция сохраняет изменения аватар
-  function handleFormSubmitAvatar (data, btnSubmit) {
-    api.saveUserAvatar(data.avatar)
-    .then((result) => {
-      userInfo.setUserAvatar(result);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    })
-    .finally(() => {
-      popupAvatar.close();
-      btnSubmit.textContent = 'Сохранить';
-    });
-  }
-
-  //Функция создания новой карточки
-  function handleFormSubmitCreate (objItem, btnSubmit) {
-
-    api.createNewCard(objItem)
-    .then((result) => {
-      createCard(result);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    })
-    .finally(() => {
-      popupCreate.close();
-      btnSubmit.textContent = 'Создать';
-    });
-  }
-
-  //Функция открытие модального окна при нажатие на корзину
-  function handleClickDelete(cardId, cardElement) {
-    popupDeleteCard.open(cardId, cardElement);
-  }
-
-  //Функция удаления карточки
-  function handleFormSubmitDeleteCard (cardId, cardElement, btnSubmit) {
-    api.deleteCard(cardId)
-    .then(() => {
-      cardElement.remove();
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    })
-    .finally(() => {
-      popupDeleteCard.close();
-      btnSubmit.textContent = 'Да';
-    });
-  }
-
-  //Функция клик по сердечку Нравится (like)
-  function handleClickLike(cardId, isLike, cardElement) {
-    api.likeCard(cardId, isLike)
-    .then((result) => {
-      cardElement.closest('.gallery-item__like').querySelector('.gallery-item__textlikes').innerText = result.likes.length;
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    });
-  }
-
-  const userInfo = new UserInfo({userName: '.profile-info__nametext', userInfo: '.profile-info__description', userAvatar: '.profile-info__avatar'});
-
-  api.getUserInfo()
-    .then((result) => {
-      userInfo.setUserInfo(result);
-      userInfo.setUserAvatar(result);
-    })
-    .catch((err) => {
-      console.log(err); // выведем ошибку в консоль
-    });
-
-  //Нажатие на кнопку редактировать
-  const popupEdit = new PopupWithForm(constants.popupEdit, handleFormSubmitEdit);
-  popupEdit.setEventListeners();
-
-  constants.buttonEditProfile.addEventListener('click', () => {
-    const userData = userInfo.getUserInfo();
-    constants.nameInputEdit.value = userData.userName;
-    constants.descriptionInputEdit.value = userData.userInfo;
-
-    validFormEdit.resetValidation();
-    popupEdit.open();
+    cardsList.renderItems(cardData, userData._id);
+  })
+  .catch((err) => {
+    console.log('Ошибка получения данных пользователя и первоначального списка карточек', err);
   });
 
-  //Нажатие на аватар
-  const popupAvatar = new PopupWithForm(constants.popupAvatar, handleFormSubmitAvatar);
-  popupAvatar.setEventListeners();
+//Создание карточки
+function createCard(item, currentUserId) {
+  const card = new Card (
+    item,
+    currentUserId,
+    '.gallery-item-template',
+    handleCardClick,
+    handleClickDelete,
+    handleClickLike
+    );
+  //const cardElement = card.generate();
+  //cardsList.addItem(cardElement);
+  return card.generate();
+}
 
-  constants.buttonEditAvatar.addEventListener('click', () => {
-    const userData = userInfo.getUserAvatar();
-    constants.avatarInput.value = userData.userAvatar;
+//Закрытие модального окна для передачи в класс Card
+function handleCardClick(name, link) {
+  popupPhoto.open(name, link);
+}
 
-    validFormAvatar.resetValidation();
-    popupAvatar.open();
+//Функция сохраняет изменения в импутах в текстовые элементы
+function handleFormSubmitEdit (data, btnSubmit) {
+  api.saveUserInfo(data)
+  .then((result) => {
+    userInfo.setUserInfo(result);
+    popupEdit.close();
+  })
+  .catch((err) => {
+    console.log('Ошибка сохранения данных пользователя', err);
+  })
+  .finally(() => {
+    btnSubmit.textContent = 'Сохранить';
   });
+}
 
-  //Модальное окно с картинкой
-  const popupPhoto = new PopupWithImage(constants.popupPhoto);
-  popupPhoto.setEventListeners();
-
-  //Нажатие на кнопку (+)
-  const popupCreate = new PopupWithForm(constants.popupCreate, handleFormSubmitCreate);
-  popupCreate.setEventListeners();
-
-  constants.buttonCreate.addEventListener('click', () => {
-    validFormCreate.resetValidation();
-    popupCreate.open();
+//Функция сохраняет изменения аватар
+function handleFormSubmitAvatar (data, btnSubmit) {
+  api.saveUserAvatar(data.avatar)
+  .then((result) => {
+    userInfo.setUserAvatar(result.avatar);
+    popupAvatar.close();
+  })
+  .catch((err) => {
+    console.log('Ошибка сохранения аватара пользователя', err);
+  })
+  .finally(() => {
+    btnSubmit.textContent = 'Сохранить';
   });
+}
 
-  //Нажатие на корзину (кнопка удалить на карточке)
-  const popupDeleteCard = new PopupDeleteCard(constants.popupDeleteCard, handleFormSubmitDeleteCard);
-  popupDeleteCard.setEventListeners();
+//Функция создания новой карточки
+function handleFormSubmitCreate (objItem, btnSubmit) {
 
-  //Проверка валидности форм
-  const validFormEdit = new FormValidator(constants.formElementEdit, validationConfig);
-  validFormEdit.enableValidation();
+  api.createNewCard(objItem)
+  .then((result) => {
+    const card = createCard(result, result.owner._id);
+    cardsList.addItemNew(card);
+    popupCreate.close();
+  })
+  .catch((err) => {
+    console.log('Ошибка создания новой карточки', err);
+  })
+  .finally(() => {
+    btnSubmit.textContent = 'Создать';
+  });
+}
 
-  const validFormCreate = new FormValidator(constants.formElementCreate, validationConfig);
-  validFormCreate.enableValidation();
+//Функция открытие модального окна при нажатие на корзину
+function handleClickDelete(cardId, cardElement) {
+  popupDeleteCard.open(cardId, cardElement);
+}
 
-  const validFormAvatar = new FormValidator(constants.formElementAvatar, validationConfig);
-  validFormAvatar.enableValidation();
+//Функция удаления карточки
+function handleFormSubmitDeleteCard (cardId, cardElement, btnSubmit) {
+  api.deleteCard(cardId)
+  .then(() => {
+    cardsList.deleteItem(cardElement);
+    popupDeleteCard.close();
+  })
+  .catch((err) => {
+    console.log('Ошибка при удаление карточки', err); // выведем ошибку в консоль
+  })
+  .finally(() => {
+    btnSubmit.textContent = 'Да';
+  });
+}
 
-  //End Promise
-})
-.catch((err) => {
-  console.log(err); // выведем ошибку в консоль
+//Функция клик по сердечку Нравится (like)
+function handleClickLike(cardId, isLike, cardElement) {
+  api.likeCard(cardId, isLike)
+  .then((result) => {
+    this.setLikeCount(cardElement, result.likes.length);
+    this.likeItem(cardElement);
+  })
+  .catch((err) => {
+    console.log('Ошибка ставим мне нравится', err); // выведем ошибку в консоль
+  });
+}
+
+//Нажатие на кнопку редактировать
+const popupEdit = new PopupWithForm(constants.popupEdit, handleFormSubmitEdit);
+popupEdit.setEventListeners();
+
+constants.buttonEditProfile.addEventListener('click', () => {
+  const userData = userInfo.getUserInfo();
+  constants.nameInputEdit.value = userData.userName;
+  constants.descriptionInputEdit.value = userData.userInfo;
+
+  validFormEdit.resetValidation();
+  popupEdit.open();
 });
+
+//Нажатие на аватар
+const popupAvatar = new PopupWithForm(constants.popupAvatar, handleFormSubmitAvatar);
+popupAvatar.setEventListeners();
+
+constants.buttonEditAvatar.addEventListener('click', () => {
+  const userData = userInfo.getUserAvatar();
+
+  validFormAvatar.resetValidation();
+  popupAvatar.open();
+});
+
+//Модальное окно с картинкой
+const popupPhoto = new PopupWithImage(constants.popupPhoto);
+popupPhoto.setEventListeners();
+
+//Нажатие на кнопку (+)
+const popupCreate = new PopupWithForm(constants.popupCreate, handleFormSubmitCreate);
+popupCreate.setEventListeners();
+
+constants.buttonCreate.addEventListener('click', () => {
+  validFormCreate.resetValidation();
+  popupCreate.open();
+});
+
+//Нажатие на корзину (кнопка удалить на карточке)
+const popupDeleteCard = new PopupDeleteCard(constants.popupDeleteCard, handleFormSubmitDeleteCard);
+popupDeleteCard.setEventListeners();
+
+//Проверка валидности форм
+const validFormEdit = new FormValidator(constants.formElementEdit, validationConfig);
+validFormEdit.enableValidation();
+
+const validFormCreate = new FormValidator(constants.formElementCreate, validationConfig);
+validFormCreate.enableValidation();
+
+const validFormAvatar = new FormValidator(constants.formElementAvatar, validationConfig);
+validFormAvatar.enableValidation();
