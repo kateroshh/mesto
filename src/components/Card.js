@@ -1,5 +1,5 @@
 export default class Card {
-	constructor(data, selector, handleCardClick, handleClickDelete, handleClickLike, currentUser) {
+	constructor(data, currentUserId, selector, handleCardClick, handleClickDelete, handleClickLike) {
     this._selector = selector;
     this._name = data.name;
     this._link = data.link;
@@ -12,7 +12,7 @@ export default class Card {
     this._handleCardClick = handleCardClick;
     this._handleClickDelete = handleClickDelete;
     this._handleClickLike = handleClickLike;
-    this._currentUserId = currentUser._id;
+    this._currentUserId = currentUserId;
 	}
 
   //Получение шаблона разметки
@@ -30,7 +30,7 @@ export default class Card {
     this._setEventListeners();
 
     this._getIsLike();
-    this._getGalleryLike(this._element.querySelector('.gallery-item__btnlike'));
+    this.likeItem(this._element.querySelector('.gallery-item__btnlike'));
     this._element.querySelector('.gallery-item__text').innerText = this._name;
     this._element.querySelector('.gallery-item__textlikes').innerText = this._likes;
     const itemElementImg = this._element.querySelector('.gallery-item__img');
@@ -54,7 +54,6 @@ export default class Card {
     //Нравится
     this._element.querySelector('.gallery-item__btnlike').addEventListener('click', (evt) => {
       this._isLike = !this._isLike;
-      this._getGalleryLike(evt.target);
 
       this._handleClickLike(this._id, this._isLike, evt.target);
 		});
@@ -71,11 +70,16 @@ export default class Card {
 	}
 
   //-------------- НРАВИТСЯ ---------------
-  _getGalleryLike(item) {
+  likeItem(item) {
     if(this._isLike) {
       item.classList.add('gallery-item__btnlike_active');
     } else {
       item.classList.remove('gallery-item__btnlike_active');
     }
   }
+
+  setLikeCount(item, count) {
+    item.closest('.gallery-item__like').querySelector('.gallery-item__textlikes').innerText = count;
+  }
+
 }
