@@ -55,12 +55,12 @@ export default class Card {
     this._element.querySelector('.gallery-item__btnlike').addEventListener('click', (evt) => {
       this._isLike = !this._isLike;
 
-      this._handleClickLike(this._id, this._isLike, evt.target);
+      this._handleClickLike(this._id, this._isLike, evt.target, this);
 		});
 
     //Удаление
     this._element.querySelector('.gallery-item__delete').addEventListener('click', (evt) => {
-      this._handleClickDelete(this._id, evt.target.closest('.gallery-item'));
+      this._handleClickDelete(this._id, evt.target.closest('.gallery-item'), this);
 		});
 
     //Popup картинка
@@ -80,6 +80,11 @@ export default class Card {
 
   setLikeCount(item, count) {
     item.closest('.gallery-item__like').querySelector('.gallery-item__textlikes').innerText = count;
+  }
+
+  //Удалить элемент карточки из верстки
+  deleteItem(element) {
+    element.remove();
   }
 
 }

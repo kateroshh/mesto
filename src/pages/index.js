@@ -110,15 +110,15 @@ function handleFormSubmitCreate (objItem, btnSubmit) {
 }
 
 //Функция открытие модального окна при нажатие на корзину
-function handleClickDelete(cardId, cardElement) {
-  popupDeleteCard.open(cardId, cardElement);
+function handleClickDelete(cardId, cardElement, cardClass) {
+  popupDeleteCard.open(cardId, cardElement, cardClass);
 }
 
 //Функция удаления карточки
-function handleFormSubmitDeleteCard (cardId, cardElement, btnSubmit) {
+function handleFormSubmitDeleteCard (cardId, cardElement, cardClass, btnSubmit) {
   api.deleteCard(cardId)
   .then(() => {
-    cardsList.deleteItem(cardElement);
+    cardClass.deleteItem(cardElement);
     popupDeleteCard.close();
   })
   .catch((err) => {
@@ -130,11 +130,11 @@ function handleFormSubmitDeleteCard (cardId, cardElement, btnSubmit) {
 }
 
 //Функция клик по сердечку Нравится (like)
-function handleClickLike(cardId, isLike, cardElement) {
+function handleClickLike(cardId, isLike, cardElement, cardClass) {
   api.likeCard(cardId, isLike)
   .then((result) => {
-    this.setLikeCount(cardElement, result.likes.length);
-    this.likeItem(cardElement);
+    cardClass.setLikeCount(cardElement, result.likes.length);
+    cardClass.likeItem(cardElement);
   })
   .catch((err) => {
     console.log('Ошибка ставим мне нравится', err); // выведем ошибку в консоль
